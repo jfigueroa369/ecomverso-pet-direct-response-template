@@ -1,0 +1,14 @@
+---
+import '../styles/global.css';
+const { title = 'Pet Direct Response' } = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Plantilla mobile-first de respuesta directa para productos caninos." />
+    <title>{title}</title>
+  </head>
+  <body><slot /></body>
+</html>

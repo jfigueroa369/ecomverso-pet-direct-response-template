@@ -1,5 +1,6 @@
 export type Offer = { qty: number; label: string; detail: string; badge?: string; popular?: boolean };
 export type Review = { name: string; city: string; quote: string };
+export type GalleryItem = { src: string; alt: string; label: string; note: string };
 export type DirectResponseManifest = {
   slug: string; name: string; eyebrow: string;
   hero: { headline: string; highlight: string; subheadline: string; cta: string; image: string };
@@ -13,6 +14,7 @@ export type DirectResponseManifest = {
   offers: Offer[];
   faq: { question: string; answer: string }[];
   media: { hero: string; beforeAfter: string };
+  gallery: GalleryItem[];
 };
 
 const slug = String(process.env.PUBLIC_PRODUCT_SLUG || import.meta.env.PUBLIC_PRODUCT_SLUG || 'producto-ejemplo').trim();
@@ -89,4 +91,10 @@ export const manifest: DirectResponseManifest = {
     hero: asset('hero-dog', '/media/hero-dog.png'),
     beforeAfter: asset('before-after-dog', '/media/before-after-dog.png'),
   },
+  gallery: [
+    { src: asset('gallery-product-lifestyle', '/media/gallery-product-lifestyle.png'), alt: 'Frasco de bocados junto a un perro en casa', label: 'En su espacio', note: 'Una rutina que cabe en el día real.' },
+    { src: asset('gallery-owner-dog', '/media/gallery-owner-dog.png'), alt: 'Persona compartiendo con su perro en casa', label: 'Más momentos', note: 'El bienestar también se nota en cómo conviven.' },
+    { src: asset('gallery-usage', '/media/gallery-usage.png'), alt: 'Bocados y frasco preparados para servir', label: 'Fácil de sumar', note: 'Todo listo para acompañar su comida.' },
+    { src: asset('gallery-offer', '/media/gallery-offer.png'), alt: 'Presentación de bocados en un set de envío', label: 'Tu presentación', note: 'Elige la cantidad que mejor encaja contigo.' },
+  ],
 };

@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { manifest } from '../config/manifest';
+import { asset, manifest } from '../config/manifest';
 const panelUrl = String(import.meta.env.PUBLIC_PANEL_API_URL || '').replace(/\/$/, '');
 ---
 <Layout title={manifest.name}>
@@ -73,7 +73,7 @@ const panelUrl = String(import.meta.env.PUBLIC_PANEL_API_URL || '').replace(/\/$
     <div class="checkout__inner">
       <span class="checkout__badge">💵 PAGO EN EFECTIVO CONTRA ENTREGA</span>
       <h2 id="checkout-title">Completa tu pedido</h2>
-      <img class="checkout__trust" src="/checkout-assets/banner-garantia.webp" data-fallback="/checkout-assets/banner-garantia.webp" alt="Envío 100% gratis · Paga seguro al recibir · Nuestros aliados de entrega" width="1080" height="667" />
+      <img class="checkout__trust" src={asset('banner-garantia', '/checkout-assets/banner-garantia.webp')} data-fallback="/checkout-assets/banner-garantia.webp" alt="Envío 100% gratis · Paga seguro al recibir · Nuestros aliados de entrega" width="1080" height="667" />
       <p class="checkout__hint">Paga en <strong>EFECTIVO cuando lo recibas</strong> en tu casa. 🚚 Envío GRATIS a todo el país.</p>
       <div class="checkout__section-title">🎁 Elige tu oferta</div>
       <div class="checkout__offers">{manifest.offers.map((offer, index) => <button type="button" class:list={['checkout-offer', index === 1 && 'selected']} data-select-qty={offer.qty} aria-pressed={index === 1 ? 'true' : 'false'}><span class="checkout-offer__thumb"><img src="/media/gallery-offer.png" data-fallback="/media/gallery-offer.png" alt="" width="56" height="56" loading="lazy" /></span><span class="checkout-offer__main"><strong>{offer.label}</strong><small>{offer.detail}</small><b class="checkout-offer__price" data-price-for={offer.qty}>Precio confirmado en checkout</b>{offer.badge && <em>{offer.badge}</em>}</span><span class="checkout-offer__radio" aria-hidden="true"></span></button>)}</div>
@@ -91,7 +91,7 @@ const panelUrl = String(import.meta.env.PUBLIC_PANEL_API_URL || '').replace(/\/$
         <label>Barrio<input name="barrio" required placeholder="Ej: El Centro" /></label>
         <label class="optional">Notas para el repartidor (opcional)<input name="note" placeholder="Ej: Casa esquinera azul. Llamar antes de llegar." /></label>
         <button class="button button--primary button--full" type="submit"><span>SOLICITAR PEDIDO</span><small>💵 Pago en EFECTIVO contra entrega</small></button>
-        <img class="checkout__payment" src="/checkout-assets/banner-pago.webp" data-fallback="/checkout-assets/banner-pago.webp" alt="Aceptamos todos los medios de pago a nivel nacional" width="1080" height="477" loading="lazy" />
+        <img class="checkout__payment" src={asset('banner-pago', '/checkout-assets/banner-pago.webp')} data-fallback="/checkout-assets/banner-pago.webp" alt="Aceptamos todos los medios de pago a nivel nacional" width="1080" height="477" loading="lazy" />
         <p class="form-status" role="alert"></p>
       </form>
     </div>

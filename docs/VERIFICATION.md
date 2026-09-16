@@ -8,14 +8,18 @@
   template canónico.
 - El workflow n8n `Panel · Crear sitio completo (app)` terminó la provisión
   controlada en la ejecución `13080`.
+- El panel central publicó la release `1.1.1` desde
+  `656c72cfcc0c67792a1e6b254cef5f877887c5d4`; el despliegue de EasyPanel
+  terminó con `Success` el 16 de septiembre de 2026 a las 08:06:30 UTC.
+- El health del servicio del panel
+  (`https://cookieforge-panel-ecommerce.a4hphk.easypanel.host/api/health`)
+  responde `200` después del despliegue.
 - El smoke repo usa el mismo contrato y conserva los tres assets base de
   checkout (`banner-garantia.webp`, `banner-pago.webp`, `sello-garantia.webp`).
-- `https://pet-direct-response-smoke-2026.decompras247.com/api/health`
-  responde `200` con `template: pet-direct-response-astro`, `coreVersion:
-  1.1.0` y las capacidades de tracking, proxies, Cloudinary y mobile direct
-  response.
-- El dominio público responde `200` para los assets de checkout y el CTA abre
-  el formulario de pedido sin enviar datos durante la prueba.
+- El smoke histórico `pet-direct-response-smoke-2026.decompras247.com` ya no
+  está publicado (durante esta auditoría devuelve `404`); no se usa como
+  evidencia de producción ni se modifica su landing. Para una nueva prueba se
+  debe reprovisionar un slug con el selector `Pet Direct Response · Astro`.
 - QA móvil a 390×844: `scrollWidth` coincide con el viewport (390px), no hay
   desbordamiento horizontal y las 9 imágenes cargan tras recorrer la página.
 - Los assets Cloudinary mantienen prioridad; cada imagen crítica declara un

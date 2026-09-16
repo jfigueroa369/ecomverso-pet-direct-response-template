@@ -1,0 +1,64 @@
+/* Mobile-first guardrails. Keep every section inside the viewport and preserve
+   the visual hierarchy at 320–600px widths. Animations remain compositor-only. */
+html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+.site-shell { width: 100%; overflow: clip; }
+.ticker { background: linear-gradient(180deg, #fbd271 0%, #f5b942 42%, #d2901f 100%); color: #4a3008; box-shadow: 0 2px 10px rgba(150,100,10,.3); }
+.ticker span { opacity: 1; text-shadow: 0 1px 0 rgba(255,255,255,.4); }
+.unit-counter { background: linear-gradient(90deg, #991b1b, #dc2626, #991b1b); box-shadow: 0 5px 16px rgba(185,28,28,.3); }
+.unit-counter strong { color: #fde68a; }
+.ticker__track { padding-inline: .75rem; gap: 1.25rem; }
+.ticker__track span { flex: 0 0 auto; }
+.unit-counter { min-height: 2.7rem; }
+.section-pad { width: 100%; padding: 3.5rem 1.1rem; }
+.hero { gap: 1.7rem; padding-top: 2.3rem; }
+.hero__copy, .hero__visual, .hero__media { min-width: 0; width: 100%; }
+.hero h1 { font-size: clamp(2.75rem, 14vw, 4.5rem); max-width: 8ch; overflow-wrap: anywhere; }
+.lede { font-size: .98rem; }
+.hero__actions { align-items: stretch; gap: .8rem; margin: 1.4rem 0; }
+.hero__actions .button { flex: 1 1 100%; }
+.hero__actions .text-link { align-self: center; }
+.hero__media { transform: none; border-radius: .9rem 2.8rem .9rem 2.8rem; }
+.hero__media img { aspect-ratio: 4 / 5; width: 100%; height: auto; min-height: 0; object-fit: cover; }
+.hero__stamp { left: .65rem; bottom: .8rem; }
+.proof-strip { grid-template-columns: 1fr 1fr; width: 100%; }
+.proof-strip div { min-width: 0; padding: .85rem .65rem; gap: .4rem; font-size: .65rem; }
+.proof-strip span { overflow-wrap: anywhere; }
+.manifesto { grid-template-columns: 1fr; gap: 1.3rem; align-items: start; }
+.manifesto__copy h2 { font-size: clamp(2.8rem, 13vw, 4.5rem); }
+.manifesto__aside { justify-self: start; text-align: left; }
+.problem__grid { grid-template-columns: 1fr; gap: 1.4rem; }
+.problem li { grid-template-columns: 1.9rem minmax(0, 1fr) auto; }
+.problem li b { overflow-wrap: anywhere; }
+.problem__photo { border-radius: 2rem .7rem 2rem .7rem; }
+.problem__photo img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+.before-after { width: 100%; margin-top: 1.4rem; border-radius: .7rem 2rem .7rem 2rem; }
+.before-after img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.before-after figcaption { inset: auto .55rem .55rem; }
+.before-after figcaption span { max-width: 48%; padding: .4rem .45rem; font-size: .58rem; }
+.steps { grid-template-columns: 1fr; }
+.gallery__grid { grid-template-columns: 1fr; gap: .65rem; margin-top: 1.6rem; }
+.gallery-card, .gallery-card--1, .gallery-card--4 { grid-column: auto; grid-row: auto; min-height: 0; height: auto; border-radius: .8rem; }
+.gallery-card img, .gallery-card--1 img, .gallery-card--4 img { min-height: 0; aspect-ratio: 4 / 5; height: auto; }
+.benefits__top { display: grid; align-items: start; }
+.benefits__line { text-align: left; }
+.benefit-list article { grid-template-columns: 2rem minmax(0, 1fr) auto; }
+.benefit-list p { overflow-wrap: anywhere; }
+.review-rail { grid-auto-columns: minmax(88%, 1fr); margin-inline: -.25rem; padding-inline: .25rem; }
+.compare-card { overflow-x: auto; }
+.compare-card__head, .compare-card__row { min-width: 29rem; }
+.offer-grid { grid-template-columns: 1fr; }
+.checkout { width: min(calc(100vw - 1rem), 520px); max-width: calc(100vw - 1rem); max-height: 94dvh; border-radius: .9rem; }
+.checkout__inner { padding-inline: .9rem; }
+.checkout__offers { grid-template-columns: 1fr; }
+.checkout__offers button { grid-template-columns: 1fr auto; align-items: center; }
+.checkout__trust, .checkout__payment { max-width: 100%; height: auto; }
+.mobile-dock { min-height: 3.7rem; }
+@media (min-width: 600px) and (max-width: 759px) {
+  .hero { grid-template-columns: 1fr 1fr; }
+  .hero__copy { order: 0; }
+  .hero__media { max-width: none; }
+  .problem__grid { grid-template-columns: 1fr 1fr; }
+  .gallery__grid { grid-template-columns: 1.1fr .9fr; }
+  .gallery-card--1 { grid-row: span 2; min-height: 24rem; }
+  .gallery-card--1 img { min-height: 24rem; }
+}

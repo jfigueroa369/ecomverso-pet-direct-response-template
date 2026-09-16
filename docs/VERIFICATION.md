@@ -1,6 +1,6 @@
 # Verificación de integración
 
-Última verificación: 15 de septiembre de 2026.
+Última verificación: 16 de septiembre de 2026.
 
 ## Resultado
 
@@ -16,6 +16,11 @@
   response.
 - El dominio público responde `200` para los assets de checkout y el CTA abre
   el formulario de pedido sin enviar datos durante la prueba.
+- QA móvil a 390×844: `scrollWidth` coincide con el viewport (390px), no hay
+  desbordamiento horizontal y las 9 imágenes cargan tras recorrer la página.
+- Los assets Cloudinary mantienen prioridad; cada imagen crítica declara un
+  fallback local versionado para evitar bloques vacíos mientras n8n publica la
+  carpeta `ecomversity/<slug>/pet-direct-response/`.
 
 ## Condición comercial
 

@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { manifest } from '../config/manifest';
+---
+<Layout title={`Pedido recibido · ${manifest.name}`}>
+  <main class="thanks">
+    <div class="thanks__card">
+      <span class="thanks__icon" aria-hidden="true">✓</span>
+      <p class="eyebrow">Pedido recibido</p>
+      <h1>Gracias por elegir<br /><em>su nueva rutina.</em></h1>
+      <p>Te contactaremos por WhatsApp o teléfono para confirmar los datos y la entrega. El pago se realiza en efectivo contra entrega cuando aplica.</p>
+      <a class="button button--primary" href="/">Volver a la presentación ↗</a>
+    </div>
+  </main>
+</Layout>

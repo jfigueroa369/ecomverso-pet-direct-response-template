@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { manifest } from '../config/manifest';
+const panelUrl = String(import.meta.env.PUBLIC_PANEL_API_URL || '').replace(/\/$/, '');
 ---
 <Layout title={manifest.name}>
   <div class="site-shell">
@@ -67,7 +68,34 @@ import { manifest } from '../config/manifest';
     <footer class="footer"><div><b>SILKROAD COMMERCE S.A.S.</b><span>NIT 902.088.592-9 · Bogotá D.C., Colombia</span></div><span><a href="/terminos">Términos</a> · <a href="/privacidad">Privacidad</a></span></footer><div class="mobile-dock"><span><b>Oferta activa</b><small>Precio confirmado en checkout</small></span><button class="button button--primary" data-open-checkout>Quiero la mía ↗</button></div>
   </div>
 
-  <dialog class="checkout" id="checkout-dialog" aria-labelledby="checkout-title"><button class="checkout__close" type="button" data-close-checkout aria-label="Cerrar">×</button><div class="checkout__inner"><img class="checkout__trust" src="/checkout-assets/banner-garantia.webp" data-fallback="/checkout-assets/banner-garantia.webp" alt="Envío gratis y paga seguro al recibir" width="1080" height="667" /><p class="eyebrow">Pedido seguro</p><h2 id="checkout-title">Completa tus datos</h2><p class="checkout__hint">La oferta y el precio se validan en el panel antes de crear el pedido.</p><div class="checkout__offers">{manifest.offers.map((offer) => <button type="button" data-select-qty={offer.qty}><strong>{offer.label}</strong><span>{offer.detail}</span></button>)}</div><form id="order-form"><input type="hidden" name="quantity" value="1" /><label>Nombre completo<input name="fullName" required autocomplete="name" /></label><label>Celular<input name="phone" required autocomplete="tel" /></label><label>Departamento<input name="department" required /></label><label>Ciudad<input name="city" required /></label><label>Dirección<input name="address" required autocomplete="street-address" /></label><label class="optional">Correo (opcional)<input name="email" type="email" autocomplete="email" /></label><button class="button button--primary button--full" type="submit">SOLICITAR PEDIDO</button><img class="checkout__payment" src="/checkout-assets/banner-pago.webp" data-fallback="/checkout-assets/banner-pago.webp" alt="Medios de pago disponibles" width="1080" height="667" /><p class="form-status" role="status"></p></form></div></dialog>
+  <dialog class="checkout" id="checkout-dialog" aria-labelledby="checkout-title" data-panel-url={panelUrl} data-product-slug={manifest.slug}>
+    <button class="checkout__close" type="button" data-close-checkout aria-label="Cerrar">×</button>
+    <div class="checkout__inner">
+      <span class="checkout__badge">💵 PAGO EN EFECTIVO CONTRA ENTREGA</span>
+      <h2 id="checkout-title">Completa tu pedido</h2>
+      <img class="checkout__trust" src="/checkout-assets/banner-garantia.webp" data-fallback="/checkout-assets/banner-garantia.webp" alt="Envío 100% gratis · Paga seguro al recibir · Nuestros aliados de entrega" width="1080" height="667" />
+      <p class="checkout__hint">Paga en <strong>EFECTIVO cuando lo recibas</strong> en tu casa. 🚚 Envío GRATIS a todo el país.</p>
+      <div class="checkout__section-title">🎁 Elige tu oferta</div>
+      <div class="checkout__offers">{manifest.offers.map((offer, index) => <button type="button" class:list={['checkout-offer', index === 1 && 'selected']} data-select-qty={offer.qty} aria-pressed={index === 1 ? 'true' : 'false'}><span class="checkout-offer__thumb"><img src="/media/gallery-offer.png" data-fallback="/media/gallery-offer.png" alt="" width="56" height="56" loading="lazy" /></span><span class="checkout-offer__main"><strong>{offer.label}</strong><small>{offer.detail}</small><b class="checkout-offer__price" data-price-for={offer.qty}>Precio confirmado en checkout</b>{offer.badge && <em>{offer.badge}</em>}</span><span class="checkout-offer__radio" aria-hidden="true"></span></button>)}</div>
+      <div class="checkout__summary" aria-live="polite"><div><span>Producto × <b id="summary-qty">2</b></span><strong id="summary-subtotal">Precio confirmado</strong></div><div><span>Envío</span><strong class="checkout__free">GRATIS</strong></div><div class="checkout__summary-total"><span>Total a pagar</span><strong id="summary-total">Lo confirma el panel</strong></div></div>
+      <form id="order-form" novalidate>
+        <input type="hidden" name="quantity" value="2" />
+        <div class="checkout__section-title">📝 Ingresa tus datos</div>
+        <label>Celular / WhatsApp<input name="phone" type="tel" required inputmode="numeric" autocomplete="tel" maxlength="20" placeholder="Ej: 3001234567" /><small>📲 Te contactaremos por aquí para confirmar tu pedido.</small></label>
+        <label>Nombre y apellido<input name="fullName" required autocomplete="name" placeholder="Ej: Juana Pérez García" /></label>
+        <label><span id="document-label">Documento de identidad</span><input name="cedula" required inputmode="text" maxlength="20" placeholder="Número de documento" /><small>🧾 Lo usamos para identificar y facturar tu pedido.</small></label>
+        <label class="optional">Correo electrónico (opcional)<input name="email" type="email" autocomplete="email" maxlength="160" placeholder="Para enviarte el resumen de tu pedido" /></label>
+        <div class="checkout__section-title checkout__section-title--sub">📦 ¿A dónde enviamos tu pedido?</div>
+        <label>Dirección<input name="address" required minlength="3" autocomplete="street-address" placeholder="Ej: Calle 10 # 5-23, Apto 201" /></label>
+        <div class="checkout__field-row"><label>Departamento<select name="department" required><option value="">Selecciona tu departamento</option><option>Antioquia</option><option>Atlántico</option><option>Bogotá D.C.</option><option>Bolívar</option><option>Caldas</option><option>Cundinamarca</option><option>Magdalena</option><option>Meta</option><option>Nariño</option><option>Norte de Santander</option><option>Quindío</option><option>Risaralda</option><option>Santander</option><option>Tolima</option><option>Valle del Cauca</option></select></label><label>Ciudad / Municipio<input name="city" required autocomplete="address-level2" placeholder="Ej: Medellín" /></label></div>
+        <label>Barrio<input name="barrio" required placeholder="Ej: El Centro" /></label>
+        <label class="optional">Notas para el repartidor (opcional)<input name="note" placeholder="Ej: Casa esquinera azul. Llamar antes de llegar." /></label>
+        <button class="button button--primary button--full" type="submit"><span>SOLICITAR PEDIDO</span><small>💵 Pago en EFECTIVO contra entrega</small></button>
+        <img class="checkout__payment" src="/checkout-assets/banner-pago.webp" data-fallback="/checkout-assets/banner-pago.webp" alt="Aceptamos todos los medios de pago a nivel nacional" width="1080" height="477" loading="lazy" />
+        <p class="form-status" role="alert"></p>
+      </form>
+    </div>
+  </dialog>
   <script>
     // Cloudinary es la primera fuente; el fallback local evita un bloque vacío
     // mientras n8n termina de publicar los assets en la carpeta de la landing.
@@ -81,11 +109,100 @@ import { manifest } from '../config/manifest';
     const form = document.querySelector<HTMLFormElement>('#order-form');
     const qty = document.querySelector<HTMLInputElement>('#order-form [name="quantity"]');
     const status = document.querySelector<HTMLElement>('#order-form .form-status');
-    document.querySelectorAll<HTMLButtonElement>('[data-open-checkout]').forEach((button) => button.addEventListener('click', () => { if (button.dataset.qty && qty) qty.value = button.dataset.qty; dialog?.showModal(); }));
+    const summaryQty = document.querySelector<HTMLElement>('#summary-qty');
+    const summaryTotal = document.querySelector<HTMLElement>('#summary-total');
+    const summarySubtotal = document.querySelector<HTMLElement>('#summary-subtotal');
+    const panelBase = dialog?.dataset.panelUrl || '';
+    const productSlug = dialog?.dataset.productSlug || '';
+    let livePrices = new Map<number, number>();
+    let liveCurrency = 'COP';
+    const formatMoney = (value: number) => {
+      try { return new Intl.NumberFormat('es-CO', { style: 'currency', currency: liveCurrency, maximumFractionDigits: 0 }).format(Math.round(value)); }
+      catch { return `$${Math.round(value).toLocaleString('es-CO')}`; }
+    };
+    const selectedOffer = () => document.querySelector<HTMLButtonElement>('.checkout-offer.selected');
+    const openCheckout = (button: HTMLButtonElement) => {
+      if (button.dataset.qty && qty) qty.value = button.dataset.qty;
+      const wanted = button.dataset.qty || selectedOffer()?.dataset.selectQty || '2';
+      const card = document.querySelector<HTMLButtonElement>(`.checkout-offer[data-select-qty="${wanted}"]`);
+      if (card) selectOffer(card);
+      dialog?.showModal();
+    };
+    document.querySelectorAll<HTMLButtonElement>('[data-open-checkout]').forEach((button) => button.addEventListener('click', () => openCheckout(button)));
     document.querySelector<HTMLButtonElement>('[data-close-checkout]')?.addEventListener('click', () => dialog?.close());
-    document.querySelectorAll<HTMLButtonElement>('[data-select-qty]').forEach((button) => button.addEventListener('click', () => { if (qty) qty.value = button.dataset.selectQty || '1'; document.querySelectorAll('[data-select-qty]').forEach((item) => item.classList.toggle('selected', item === button)); }));
+    function selectOffer(button: HTMLButtonElement) {
+      if (qty) qty.value = button.dataset.selectQty || '1';
+      document.querySelectorAll<HTMLButtonElement>('.checkout-offer').forEach((item) => {
+        const selected = item === button;
+        item.classList.toggle('selected', selected);
+        item.setAttribute('aria-pressed', String(selected));
+      });
+      const selectedQty = Number(button.dataset.selectQty || 1);
+      if (summaryQty) summaryQty.textContent = String(selectedQty);
+      const live = livePrices.get(selectedQty);
+      if (summaryTotal) summaryTotal.textContent = live ? formatMoney(live) : 'Lo confirma el panel';
+      if (summarySubtotal) summarySubtotal.textContent = live ? formatMoney(live) : 'Precio confirmado';
+    }
+    document.querySelectorAll<HTMLButtonElement>('[data-select-qty]').forEach((button) => button.addEventListener('click', () => selectOffer(button)));
+    async function loadPanelPrice() {
+      if (!panelBase || !productSlug) return;
+      try {
+        const response = await fetch(`${panelBase}/api/products/price?slug=${encodeURIComponent(productSlug)}`, { cache: 'no-store' });
+        if (!response.ok) return;
+        const data = await response.json();
+        liveCurrency = String(data.currency || 'COP').toUpperCase();
+        const base = Number(data.price ?? data.priceCop);
+        if (Number.isFinite(base) && base > 0) livePrices.set(1, base);
+        if (Array.isArray(data.combos)) data.combos.forEach((combo: { qty?: number; priceCop?: number; price?: number }) => {
+          const quantity = Number(combo.qty); const price = Number(combo.priceCop ?? combo.price);
+          if (quantity > 0 && Number.isFinite(price)) livePrices.set(quantity, price);
+        });
+        document.querySelectorAll<HTMLElement>('[data-price-for]').forEach((element) => {
+          const value = livePrices.get(Number(element.dataset.priceFor || 0));
+          if (value) element.textContent = formatMoney(value);
+        });
+        const active = selectedOffer();
+        if (active) selectOffer(active);
+      } catch { /* el respaldo visual se conserva si el panel no responde */ }
+    }
+    loadPanelPrice();
     const counter = document.querySelector<HTMLElement>('#unit-counter'); const counterValue = document.querySelector<HTMLElement>('#unit-counter-value'); const timer = document.querySelector<HTMLElement>('#unit-counter-timer');
     if (counter && counterValue && timer) { const start = Number(counter.dataset.start || 27); const stockKey = `pdr-stock-${location.pathname}`; const deadlineKey = `pdr-deadline-${location.pathname}`; let stock = Number(sessionStorage.getItem(stockKey) || start); let deadline = Number(sessionStorage.getItem(deadlineKey) || 0); if (!deadline || deadline < Date.now()) { deadline = Date.now() + 15 * 60 * 1000; sessionStorage.setItem(deadlineKey, String(deadline)); } const render = () => { counterValue.textContent = `Quedan ${stock} unidades a este precio`; const diff = Math.max(0, Math.floor((deadline - Date.now()) / 1000)); timer.textContent = `${String(Math.floor(diff / 60)).padStart(2, '0')}:${String(diff % 60).padStart(2, '0')}`; }; render(); window.setInterval(render, 1000); window.setInterval(() => { if (stock > 4 && Math.random() > .45) { stock -= 1; sessionStorage.setItem(stockKey, String(stock)); render(); } }, 18000); }
-    form?.addEventListener('submit', async (event) => { event.preventDefault(); if (!qty || !status || !(form instanceof HTMLFormElement)) return; status.textContent = 'Enviando…'; const payload: Record<string, unknown> = Object.fromEntries(new FormData(form)); payload.quantity = Number(payload.quantity || 1); payload.paymentMethod = 'cod'; try { const response = await fetch('/api/order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); const data = await response.json(); if (!response.ok || !data.ok) throw new Error(data.error || 'No se pudo crear el pedido'); status.textContent = 'Pedido recibido. Te contactaremos para confirmar.'; form.reset(); } catch (error) { status.textContent = error instanceof Error ? error.message : 'No pudimos procesar tu pedido.'; } });
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!qty || !status || !(form instanceof HTMLFormElement)) return;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      status.className = 'form-status';
+      status.textContent = 'Enviando pedido…';
+      const data = new FormData(form);
+      const payload = {
+        requestId: globalThis.crypto?.randomUUID?.() || String(Date.now()),
+        fullName: String(data.get('fullName') || '').trim(),
+        cedula: String(data.get('cedula') || '').trim(),
+        phone: String(data.get('phone') || '').trim(),
+        email: String(data.get('email') || '').trim(),
+        department: String(data.get('department') || '').trim(),
+        city: String(data.get('city') || '').trim(),
+        address: String(data.get('address') || '').trim(),
+        barrio: String(data.get('barrio') || '').trim(),
+        note: String(data.get('note') || '').trim(),
+        quantity: Number(data.get('quantity') || 1),
+        paymentMethod: 'cod', offer: 'standard',
+      };
+      const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (submit) submit.disabled = true;
+      try {
+        const response = await fetch('/api/order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) throw new Error(result.error || 'No se pudo crear el pedido');
+        status.className = 'form-status form-status--success';
+        status.textContent = 'Pedido recibido. Te contactaremos para confirmar la entrega.';
+        if (result.payToken) window.setTimeout(() => { window.location.href = `/gracias?token=${encodeURIComponent(String(result.payToken))}`; }, 500);
+      } catch (error) {
+        status.className = 'form-status form-status--error';
+        status.textContent = error instanceof Error ? error.message : 'No pudimos procesar tu pedido.';
+        if (submit) submit.disabled = false;
+      }
+    });
   </script>
 </Layout>
